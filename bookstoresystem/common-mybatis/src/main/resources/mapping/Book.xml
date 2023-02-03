@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team15.commonmybatis.mapper.BookMapper">
+    <select id="top10List" resultType="com.team15.commonmybatis.model.BookExtend">
+SELECT
+book.ID,
+book.ISBN,
+book.bookTitle,
+book.author,
+book.editor,
+book.publishYear,
+book.category_ID,
+book.price,
+book.salePrice,
+book.remark,
+book.readingNotes,
+book.user_ID,
+book.ceateDT,
+bookimage.imageUrl,
+bookimage.isMain
+FROM
+users
+INNER JOIN book ON book.user_ID = users.ID
+INNER JOIN bookimage ON bookimage.book_ID = book.ID
+LIMIT 0,10
+    </select>
+
+    <select id="searchBook" resultType="com.team15.commonmybatis.model.BookExtend">
+SELECT
+book.ID,
+book.ISBN,
+book.bookTitle,
+book.author,
+book.editor,
+book.publishYear,
+book.category_ID,
+book.price,
+book.salePrice,
+book.remark,
+book.readingNotes,
+book.user_ID,
+book.ceateDT,
+bookimage.imageUrl,
+bookimage.isMain
+FROM
+users
+INNER JOIN book ON book.user_ID = users.ID
+INNER JOIN bookimage ON bookimage.book_ID = book.ID
+${ew.customSqlSegment}
+LIMIT 0,10
+    </select>
+</mapper>
