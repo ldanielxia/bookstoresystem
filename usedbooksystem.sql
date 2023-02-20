@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2023-01-31 23:01:27
+Date: 2023-02-19 22:12:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,6 +47,54 @@ INSERT INTO `book` VALUES ('1', 'aa', 'ThinkJava', 'aa', 'aa', '2008', '13', '12
 INSERT INTO `book` VALUES ('2', '22', 'C# Design', '22', '22', '2018', '14', '3.00', '3.00', null, '33', '1', null);
 
 -- ----------------------------
+-- Table structure for bookcommunicate
+-- ----------------------------
+DROP TABLE IF EXISTS `bookcommunicate`;
+CREATE TABLE `bookcommunicate` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `book_ID` int(11) DEFAULT NULL,
+  `content` varchar(250) DEFAULT NULL,
+  `user_ID` int(11) DEFAULT NULL,
+  `isOwner` int(11) DEFAULT NULL,
+  `createDT` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_Reference_3` (`book_ID`),
+  KEY `FK_Reference_4` (`user_ID`),
+  CONSTRAINT `FK_Reference_3` FOREIGN KEY (`book_ID`) REFERENCES `book` (`ID`),
+  CONSTRAINT `FK_Reference_4` FOREIGN KEY (`user_ID`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of bookcommunicate
+-- ----------------------------
+INSERT INTO `bookcommunicate` VALUES ('1', '1', 'test', '1', '1', '2023-02-03 22:16:23');
+INSERT INTO `bookcommunicate` VALUES ('5', '1', '555', '1', '0', '2023-02-04 11:39:41');
+INSERT INTO `bookcommunicate` VALUES ('6', '1', 'e3ee', '1', '1', '2023-02-04 11:41:07');
+INSERT INTO `bookcommunicate` VALUES ('7', '1', '333', '1', '1', '2023-02-04 14:13:14');
+INSERT INTO `bookcommunicate` VALUES ('8', '1', 'dd', '1', '1', '2023-02-05 02:28:59');
+
+-- ----------------------------
+-- Table structure for bookfavorites
+-- ----------------------------
+DROP TABLE IF EXISTS `bookfavorites`;
+CREATE TABLE `bookfavorites` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Book_ID` int(11) DEFAULT NULL,
+  `User_ID` int(11) DEFAULT NULL,
+  `createDT` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_Reference_7` (`User_ID`),
+  KEY `FK_Reference_8` (`Book_ID`),
+  CONSTRAINT `FK_Reference_7` FOREIGN KEY (`User_ID`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK_Reference_8` FOREIGN KEY (`Book_ID`) REFERENCES `book` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of bookfavorites
+-- ----------------------------
+INSERT INTO `bookfavorites` VALUES ('1', '1', '1', '2023-02-11 14:18:52');
+
+-- ----------------------------
 -- Table structure for bookimage
 -- ----------------------------
 DROP TABLE IF EXISTS `bookimage`;
@@ -65,8 +113,8 @@ CREATE TABLE `bookimage` (
 -- ----------------------------
 -- Records of bookimage
 -- ----------------------------
-INSERT INTO `bookimage` VALUES ('1', '1', 'img/home.jpg', '11', '2023-01-30 14:43:29', '1');
-INSERT INTO `bookimage` VALUES ('2', '2', 'img/home.jpg', '22', '2023-01-31 10:28:13', '1');
+INSERT INTO `bookimage` VALUES ('1', '1', 'img/ai2.jpg', '11', '2023-01-30 14:43:29', '1');
+INSERT INTO `bookimage` VALUES ('2', '2', 'img/ai2.jpg', '22', '2023-01-31 10:28:13', '1');
 
 -- ----------------------------
 -- Table structure for category
@@ -103,6 +151,32 @@ INSERT INTO `category` VALUES ('14', 'Mobile APP', '1', '4', '2', null, '10');
 INSERT INTO `category` VALUES ('15', 'Game', '1', '4', '3', null, '10');
 
 -- ----------------------------
+-- Table structure for order
+-- ----------------------------
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order` (
+  `ID` int(11) NOT NULL,
+  `book_ID` int(11) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `seller_ID` int(11) DEFAULT NULL,
+  `buyer_ID` int(11) DEFAULT NULL,
+  `TransDate` datetime DEFAULT NULL,
+  `contactEmail` varchar(50) DEFAULT NULL,
+  `meetingAddress` varchar(255) DEFAULT NULL,
+  `createDT` datetime DEFAULT NULL,
+  `rating` varchar(255) DEFAULT NULL,
+  `isEnd` int(11) DEFAULT NULL,
+  `isAgree` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_Reference_9` (`book_ID`),
+  CONSTRAINT `FK_Reference_9` FOREIGN KEY (`book_ID`) REFERENCES `book` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of order
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
@@ -116,15 +190,22 @@ CREATE TABLE `users` (
   `dateOfBirth` date DEFAULT NULL,
   `address` varchar(250) DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL,
+  `schoolId` int(11) DEFAULT NULL,
   `school` varchar(50) DEFAULT NULL,
+  `programeId` int(11) DEFAULT NULL,
   `programe` varchar(50) DEFAULT NULL,
   `createDT` datetime DEFAULT NULL,
   `studentID` varchar(50) DEFAULT NULL,
   `isDeleted` int(11) DEFAULT NULL,
+  `area` varchar(50) DEFAULT NULL,
+  `areaId` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'abc@gmail.com', '21218cca77804d2ba1922c33e0151105', 'JackLi', 'Tom', 'man', '2022-12-30', '1', '2', '3', '4', null, '1555544545', null);
+INSERT INTO `users` VALUES ('1', 'abc@gmail.com', '21218cca77804d2ba1922c33e0151105', 'JackLi', 'Tom', 'female', '2022-11-30', '1', '2', '7', 'School1', '11', 'Business', null, '1555544545', '0', 'Alberta', '1');
+INSERT INTO `users` VALUES ('2', '33@c.com', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null);
+INSERT INTO `users` VALUES ('3', '33@c.com1', '96e79218965eb72c92a549dd5a330112', null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null);
+INSERT INTO `users` VALUES ('4', 'test@google.com', '96e79218965eb72c92a549dd5a330112', null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null);
