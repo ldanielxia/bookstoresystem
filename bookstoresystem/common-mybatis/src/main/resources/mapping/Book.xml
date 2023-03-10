@@ -22,6 +22,7 @@ FROM
 users
 INNER JOIN book ON book.user_ID = users.ID
 INNER JOIN bookimage ON bookimage.book_ID = book.ID
+WHERE   book.isSaled=0 and bookimage.isMain=1
 LIMIT 0,10
     </select>
 
@@ -46,7 +47,83 @@ FROM
 users
 INNER JOIN book ON book.user_ID = users.ID
 INNER JOIN bookimage ON bookimage.book_ID = book.ID
-${ew.customSqlSegment}
-LIMIT 0,10
+${ew.customSqlSegment} and book.isSaled=0 and bookimage.isMain=1
+LIMIT 0,20
+    </select>
+
+    <select id="favoriteBook" resultType="com.team15.commonmybatis.model.BookExtend">
+SELECT
+book.ID,
+book.ISBN,
+book.bookTitle,
+book.author,
+book.editor,
+book.publishYear,
+book.category_ID,
+book.price,
+book.salePrice,
+book.remark,
+book.readingNotes,
+book.user_ID,
+book.ceateDT,
+bookimage.imageUrl,
+bookimage.isMain
+FROM
+users
+INNER JOIN book ON book.user_ID = users.ID
+INNER JOIN bookimage ON bookimage.book_ID = book.ID
+INNER JOIN bookfavorites ON bookfavorites.Book_ID = book.ID
+${ew.customSqlSegment} and book.isSaled=0
+    </select>
+
+    <select id="myUsedBook" resultType="com.team15.commonmybatis.model.BookExtend">
+SELECT
+book.ID,
+book.ISBN,
+book.bookTitle,
+book.author,
+book.editor,
+book.publishYear,
+book.category_ID,
+book.price,
+book.salePrice,
+book.remark,
+book.readingNotes,
+book.user_ID,
+book.ceateDT,
+bookimage.imageUrl,
+bookimage.isMain
+FROM
+users
+INNER JOIN book ON book.user_ID = users.ID
+INNER JOIN bookimage ON bookimage.book_ID = book.ID
+
+${ew.customSqlSegment} and  bookimage.isMain=1 and book.isSaled=0
+    </select>
+
+
+    <select id="myOrdersBook" resultType="com.team15.commonmybatis.model.BookExtend">
+SELECT
+book.ID,
+book.ISBN,
+book.bookTitle,
+book.author,
+book.editor,
+book.publishYear,
+book.category_ID,
+book.price,
+book.salePrice,
+book.remark,
+book.readingNotes,
+book.user_ID,
+book.ceateDT,
+bookimage.imageUrl,
+bookimage.isMain
+FROM
+users
+INNER JOIN book ON book.user_ID = users.ID
+LEFT JOIN bookimage ON bookimage.book_ID = book.ID
+INNER JOIN orders ON orders.Book_ID = book.ID
+${ew.customSqlSegment} and  bookimage.isMain=1
     </select>
 </mapper>

@@ -44,16 +44,27 @@ public class UsersController {
         return resultBo;
     }
 
+
     @RequestMapping(value="users",produces = "application/json;charset=utf-8", method= RequestMethod.POST)
     public @ResponseBody
     ResultBo add(@RequestBody Users users) {
         ResultBo resultBo ;
         BaseException  restResult=new BaseException(CodeEntity.INSERT_EXCEPTION.code, CodeEntity.INSERT_EXCEPTION.message);
         try {
-            users.setIsDeleted(0);
-            usersService.save(users);
-            restResult = new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
-            resultBo = new ResultBo(restResult, new ArrayList<>());
+            //check user if exits
+            QueryWrapper<Users> queryWrapper =new QueryWrapper<>();
+            queryWrapper.lambda().eq(Users::getEmail,users.getEmail());
+            Users _tempUsers=usersService.getOne(queryWrapper);
+            if(_tempUsers==null) {
+                users.setIsDeleted(0);
+                String newPwd= MD5Util.stringMD5(users.getPassword());
+                users.setPassword(newPwd);
+                usersService.save(users);
+                restResult = new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
+                resultBo = new ResultBo(restResult, new ArrayList<>());
+            }else{
+                resultBo = new ResultBo(restResult, new ArrayList<>());
+            }
         }catch (Exception ex){
             logger.error(ex.getMessage());
             resultBo = new ResultBo(restResult, new ArrayList<>());
@@ -67,9 +78,16 @@ public class UsersController {
         ResultBo resultBo ;
         BaseException   restResult=new BaseException(CodeEntity.UPDATE_EXCEPTION.code, CodeEntity.UPDATE_EXCEPTION.message);
         try {
-            usersService.updateById(sysUsr);
-            restResult = new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
-            resultBo = new ResultBo(restResult, new ArrayList<>());
+            Users obj=usersService.getById(sysUsr.getId());
+            if(obj!=null) {
+                sysUsr.setPassword(obj.getPassword());
+                usersService.updateById(sysUsr);
+                restResult = new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
+                resultBo = new ResultBo(restResult, new ArrayList<>());
+            }else
+            {
+                resultBo = new ResultBo(restResult, new ArrayList<>());
+            }
         }catch (Exception ex){
             logger.error(ex.getMessage());
             resultBo = new ResultBo(restResult, new ArrayList<>());
@@ -98,7 +116,7 @@ public class UsersController {
     }
 
 
-    @RequestMapping(value="usr/login",produces = "application/json;charset=utf-8", method= RequestMethod.POST)
+    @RequestMapping(value="users/login",produces = "application/json;charset=utf-8", method= RequestMethod.POST)
     public @ResponseBody
     ResultBo checkUser(@RequestBody  Users users) {
         ResultBo resultBo ;
@@ -122,6 +140,28 @@ public class UsersController {
         return resultBo;
     }
 
+    @RequestMapping(value="users/exits",produces = "application/json;charset=utf-8", method= RequestMethod.POST)
+    public @ResponseBody
+    ResultBo exitsUser(@RequestBody  Users users) {
+        ResultBo resultBo ;
+        BaseException  restResult=new BaseException(CodeEntity.FALSE_EXCEPTION.code, CodeEntity.FALSE_EXCEPTION.message);
+        try{
+           QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
+           queryWrapper.lambda().eq(Users::getEmail,users.getEmail());
+           Users _tempUsers=usersService.getOne(queryWrapper);
+            if(_tempUsers!=null){
+                restResult=new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
+                resultBo = new ResultBo(restResult, _tempUsers);
+            }else{
+                resultBo = new ResultBo(restResult, new ArrayList<>());
+            }
+        }catch (Exception ex){
+            logger.debug(ex.getMessage());
+            resultBo = new ResultBo(restResult, new ArrayList<>());
+        }
+        return resultBo;
+    }
+
     @RequestMapping(value="resetPwd",produces = "application/json;charset=utf-8", method= RequestMethod.PUT)
     public @ResponseBody
     ResultBo resetPwd(@RequestBody  Users users) {
@@ -132,7 +172,7 @@ public class UsersController {
             if(!(users.getEmail().trim().equals("")&&users.getPassword().trim().equals("")) ){
 
                 users.setPassword(MD5Util.stringMD5(users.getPassword()));
-              boolean flag=usersService.updatePassword(users);
+               boolean flag=usersService.updatePassword(users);
 
                 if(flag){
                     restResult = new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
@@ -146,5 +186,21 @@ public class UsersController {
         }
         return resultBo;
     }
-
+    @RequestMapping(value="users/{id}",produces = "application/json;charset=utf-8", method= RequestMethod.GET)
+    public @ResponseBody
+    ResultBo getOne(@PathVariable int id) {
+        ResultBo resultBo ;
+        BaseException  restResult=new BaseException(CodeEntity.DELETE_EXCEPTION.code, CodeEntity.DELETE_EXCEPTION.message);
+        Users obj;
+        try {
+            obj=usersService.getById(id);
+            obj.setPassword("");
+            restResult = new BaseException(CodeEntity.SUCCESS_EXCEPTION.code, CodeEntity.SUCCESS_EXCEPTION.message);
+            resultBo = new ResultBo(restResult, obj);
+        }catch (Exception ex){
+            logger.error(ex.getMessage());
+            resultBo = new ResultBo(restResult, new ArrayList<>());
+        }
+        return resultBo;
+    }
 }

@@ -23,6 +23,7 @@ public class CodeGenerator {
                             .commentDate("yyyy-MM-dd")
                             .disableOpenDir();
                 })
+
                 .packageConfig(builder -> {
                     builder.parent("com.team15")
                             .moduleName("commonmybatis")
@@ -31,9 +32,9 @@ public class CodeGenerator {
                             // .pathInfo(Collections.singletonMap(OutputFile.xml, System.getProperty("user.dir")+"/src/main/resources/mapper1"));
                             .pathInfo(Collections.singletonMap(OutputFile.xml,"d:\\ttt\\src\\main\\resources\\mapper"));
                 })
-                // 策略配置
+
                 .strategyConfig(builder -> {
-                    builder.addInclude("bookimage")
+                    builder.addInclude("order")
 //                            .addTablePrefix("t_", "c_")
 
                             // entity
@@ -57,19 +58,19 @@ public class CodeGenerator {
 
                             // service
                             .serviceBuilder()
-                            .formatServiceFileName("%sService") // UserService
-                            .formatServiceImplFileName("%sImpl") // UserServiceImpl
+                            .formatServiceFileName("%sService")
+                            .formatServiceImplFileName("%sImpl")
 
                             // controller
                             .controllerBuilder()
-                            .formatFileName("%sController") //  UserController
+                            .formatFileName("%sController")
                             .enableRestStyle();
 
                 })
 
                 .templateEngine(new VelocityTemplateEngine())
-
                 .execute();
     }
+
 
 }

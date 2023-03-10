@@ -20,4 +20,9 @@ public interface BookMapper extends BaseMapper<Book> {
 
     List<BookExtend> top10List();
     List<BookExtend> searchBook(@Param(Constants.WRAPPER) Wrapper wrapper);
+    List<BookExtend> favoriteBook(@Param(Constants.WRAPPER) Wrapper wrapper);
+    //my used book
+    List<BookExtend> myUsedBook(@Param(Constants.WRAPPER) Wrapper wrapper);
+
+    List<BookExtend> myOrdersBook(@Param(Constants.WRAPPER) Wrapper wrapper);
 }

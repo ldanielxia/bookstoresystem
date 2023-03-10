@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team15.commonmybatis.mapper.BookcommunicateMapper">
+
+    <select id="bookcommunicateByBookID" resultType="com.team15.commonmybatis.model.BookcommunicateExtend">
+        SELECT
+bookcommunicate.content,
+bookcommunicate.ID,
+bookcommunicate.book_ID,
+bookcommunicate.user_ID,
+bookcommunicate.isOwner,
+bookcommunicate.createDT,
+users.email,
+users.firstName,
+users.lastName
+FROM
+book
+INNER JOIN bookcommunicate ON bookcommunicate.book_ID = book.ID
+INNER JOIN users ON  bookcommunicate.user_ID = users.ID
+WHERE  bookcommunicate.book_ID=#{ID}
+    </select>
+</mapper>

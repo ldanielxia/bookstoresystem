@@ -11,10 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author lixia
  * @since 2023-01-23
  */
@@ -55,11 +51,25 @@ public class Users implements Serializable {
     @TableField("phone")
     private String phone;
 
+    @TableField("areaId")
+    private String areaId;
+
+    @TableField("area")
+    private String area;
+
+    @TableField("schoolId")
+    private String schoolId;
+
     @TableField("school")
     private String school;
 
+    @TableField("programeId")
+    private String programeId;
+
     @TableField("programe")
     private String programe;
+
+
 
     @TableField("createDT")
     private LocalDateTime createDT;

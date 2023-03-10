@@ -11,10 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author lixia
  * @since 2023-01-30
  */
@@ -64,5 +60,13 @@ public class Book implements Serializable {
     @TableField("ceateDT")
     private LocalDateTime ceateDT;
 
+    @TableField("isSaled")
+    private Integer isSaled;
+
+    @TableField(exist=false)
+    private String categoryName;
+
+    @TableField(exist=false)
+    private String categoryFatherId;
 
 }

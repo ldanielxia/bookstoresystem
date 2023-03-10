@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bookstoreapp/bookstoreapp.iml" filepath="$PROJECT_DIR$/bookstoreapp/bookstoreapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bookstoresystem.iml" filepath="$PROJECT_DIR$/bookstoresystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-mybatis/common-mybatis.iml" filepath="$PROJECT_DIR$/common-mybatis/common-mybatis.iml" />
+    </modules>
+  </component>
+</project>
